@@ -624,6 +624,39 @@
             font-size: 0.9rem;
         }
 
+        /* Developer Tools */
+        .dev-tools {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--surface);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .dev-tools h4 {
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .dev-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .dev-btn:hover {
+            opacity: 0.9;
+        }
+
         /* Responsive */
         @media (max-width: 968px) {
             .auction-content {
@@ -632,6 +665,10 @@
             
             .hero h1 {
                 font-size: 2.5rem;
+            }
+            
+            .dev-tools {
+                display: none;
             }
         }
 
@@ -708,6 +745,14 @@
     </style>
 </head>
 <body>
+    <!-- Developer Tools -->
+    <div class="dev-tools">
+        <h4>Developer Tools</h4>
+        <button class="dev-btn" onclick="switchToFormSubmit()">🚀 Enable FormSubmit</button>
+        <button class="dev-btn" onclick="clearAllForms()">🗑️ Clear All Forms</button>
+        <button class="dev-btn" onclick="showSubmissions()">📋 View Submissions</button>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -766,13 +811,11 @@
                         <img src="images/item.jpg" alt="Spyder Jorts">
                     </div>
                     <div class="product-info">
-                        <h4>Spyder Jorts</h4>
+                        <h4>Spyder/h4>
                         <p class="price">N$150</p>
                         <span class="source">Custom Piece</span>
-                        <!-- Shop FormSubmit Integration -->
-                        <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" class="shop-form">
-                            <input type="hidden" name="_subject" value="Shop Purchase - Floral Air Force 1">
-                            <input type="hidden" name="_template" value="table">
+                        <!-- Shop Form - LOCAL TESTING -->
+                        <form onsubmit="handleLocalSubmit(event, 'shop')" class="shop-form">
                             <input type="hidden" name="product" value="Floral Air Force 1">
                             <input type="hidden" name="price" value="N$150">
                             <input type="hidden" name="category" value="Custom Piece">
@@ -786,13 +829,11 @@
                         <img src="images/item2.jpg" alt="Jacket">
                     </div>
                     <div class="product-info">
-                        <h4>Simp Jacket</h4>
+                        <h4> Jacket</h4>
                         <p class="price">N$75</p>
-                        <span class="source">Custom piece</span>
-                        <!-- Shop FormSubmit Integration -->
-                        <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" class="shop-form">
-                            <input type="hidden" name="_subject" value="Shop Purchase - Vintage Leather Jacket">
-                            <input type="hidden" name="_template" value="table">
+                        <span class="source">Curated Collection</span>
+                        <!-- Shop Form - LOCAL TESTING -->
+                        <form onsubmit="handleLocalSubmit(event, 'shop')" class="shop-form">
                             <input type="hidden" name="product" value="Vintage Leather Jacket">
                             <input type="hidden" name="price" value="N$75">
                             <input type="hidden" name="category" value="Curated Collection">
@@ -806,13 +847,11 @@
                         <img src="images/item1.jpg" alt="vans">
                     </div>
                     <div class="product-info">
-                        <h4>Custom vans</h4>
+                        <h4>vans</h4>
                         <p class="price">N$600</p>
-                        <span class="source">Custom piece</span>
-                        <!-- Shop FormSubmit Integration -->
-                        <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" class="shop-form">
-                            <input type="hidden" name="_subject" value="Shop Purchase - Distressed Denim Jacket">
-                            <input type="hidden" name="_template" value="table">
+                        <span class="source">Curated Collection</span>
+                        <!-- Shop Form - LOCAL TESTING -->
+                        <form onsubmit="handleLocalSubmit(event, 'shop')" class="shop-form">
                             <input type="hidden" name="product" value="Distressed Denim Jacket">
                             <input type="hidden" name="price" value="N$65">
                             <input type="hidden" name="category" value="Curated Collection">
@@ -826,13 +865,11 @@
                         <img src="images/item3.jpg" alt="chrome jorts">
                     </div>
                     <div class="product-info">
-                        <h4>CHR Jorts</h4>
+                        <h4>CHR jorts</h4>
                         <p class="price">N$95</p>
                         <span class="source">Custom Piece</span>
-                        <!-- Shop FormSubmit Integration -->
-                        <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" class="shop-form">
-                            <input type="hidden" name="_subject" value="Shop Purchase - Abstract Art Hoodie">
-                            <input type="hidden" name="_template" value="table">
+                        <!-- Shop Form - LOCAL TESTING -->
+                        <form onsubmit="handleLocalSubmit(event, 'shop')" class="shop-form">
                             <input type="hidden" name="product" value="Abstract Art Hoodie">
                             <input type="hidden" name="price" value="N$95">
                             <input type="hidden" name="category" value="Custom Piece">
@@ -855,15 +892,16 @@
             <div class="auction-live">
                 <h2>Auction Live</h2>
                 <div class="countdown" id="auctionCountdown">24:00:00</div>
-                <p>Bid now</p>
+                <p>Bid now on this exclusive hand-painted piece</p>
             </div>
-             <div class="auction-content">
+            
+            <div class="auction-content">
                 <div class="auction-image">
                     <img src="images/rr.jpg" alt="Rick Owens">
                 </div>
                 <div class="auction-details">
-                    <h3>Doc Martens Ricks</h3>
-                    <p class="current-bid">Current Bid: <strong>N$1000</strong></p>
+                    <h3>Rick Owens</h3>
+                    <p class="current-bid">Current Bid: <strong>N$1800</strong></p>
                     <p class="bidder">High Bidder: @sarahk</p>
                     <p class="time-left">Ends in: <span id="timeLeft">24 hours 00 minutes</span></p>
                     
@@ -871,7 +909,7 @@
                         <input type="number" id="bidAmount" placeholder="Enter your bid" min="185">
                         <button class="btn btn-primary" id="placeBid">Place Bid</button>
                     </div>
-                    <div class="auction-content">
+                    
                     <div class="auction-rules">
                         <h4>Auction Rules</h4>
                         <ul>
@@ -882,7 +920,7 @@
                             <li>No account needed - just bid with your name/IG handle</li>
                         </ul>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </section>
@@ -896,12 +934,8 @@
             </div>
             
             <div class="form-section">
-                <!-- Consignment FormSubmit Integration -->
-                <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" id="consignmentForm">
-                    <input type="hidden" name="_subject" value="New Consignment Request">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_captcha" value="false">
-                    
+                <!-- Consignment Form - LOCAL TESTING -->
+                <form onsubmit="handleLocalSubmit(event, 'consignment')" id="consignmentForm">
                     <div class="form-group">
                         <label for="name">Your Name</label>
                         <input type="text" id="name" name="name" class="form-control" required>
@@ -965,12 +999,8 @@
                     </div>
                 </div>
                 
-                <!-- Commission FormSubmit Integration -->
-                <form action="https://formsubmit.co/kvn41171@gmail.com" method="POST" id="commissionForm">
-                    <input type="hidden" name="_subject" value="New Custom Piece Commission">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_captcha" value="false">
-                    
+                <!-- Commission Form - LOCAL TESTING -->
+                <form onsubmit="handleLocalSubmit(event, 'commission')" id="commissionForm">
                     <div class="form-group">
                         <label for="clientName">Your Name</label>
                         <input type="text" id="clientName" name="clientName" class="form-control" required>
@@ -1074,6 +1104,124 @@
     </footer>
 
     <script>
+        // Store submissions for local testing
+        let formSubmissions = [];
+        let formSubmitEnabled = false;
+
+        // Local testing function
+        function handleLocalSubmit(event, formType) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Store submission
+            const submission = {
+                type: formType,
+                data: data,
+                timestamp: new Date().toLocaleString()
+            };
+            formSubmissions.push(submission);
+            
+            console.log(`📧 ${formType.toUpperCase()} FORM SUBMISSION:`, data);
+            
+            // Show success message
+            let message = '';
+            if (formType === 'shop') {
+                message = `🛍️ Purchase recorded for ${data.product} (${data.price})! `;
+                message += formSubmitEnabled ? 'Email sent to kvn41171@gmail.com' : 'When hosted, you will receive an email';
+            } else if (formType === 'commission') {
+                message = '🎨 Commission request saved! ';
+                message += formSubmitEnabled ? 'Email sent to kvn41171@gmail.com' : 'When hosted, this will be sent to your email';
+            } else if (formType === 'consignment') {
+                message = '📦 Consignment request logged! ';
+                message += formSubmitEnabled ? 'Email sent to kvn41171@gmail.com' : 'When hosted, you will receive an email';
+            }
+            
+            alert(message);
+            
+            // Clear form
+            event.target.reset();
+            
+            return false;
+        }
+
+        // Switch to FormSubmit (run this when hosting)
+        function switchToFormSubmit() {
+            formSubmitEnabled = true;
+            
+            // Commission form
+            const commissionForm = document.getElementById('commissionForm');
+            commissionForm.action = 'https://formsubmit.co/kvn41171@gmail.com';
+            commissionForm.method = 'POST';
+            commissionForm.onsubmit = null;
+            
+            // Add hidden fields to commission form
+            addHiddenField(commissionForm, '_subject', 'New Custom Piece Commission');
+            addHiddenField(commissionForm, '_template', 'table');
+            addHiddenField(commissionForm, '_captcha', 'false');
+            
+            // Consignment form
+            const consignmentForm = document.getElementById('consignmentForm');
+            consignmentForm.action = 'https://formsubmit.co/kvn41171@gmail.com';
+            consignmentForm.method = 'POST';
+            consignmentForm.onsubmit = null;
+            
+            // Add hidden fields to consignment form
+            addHiddenField(consignmentForm, '_subject', 'New Consignment Request');
+            addHiddenField(consignmentForm, '_template', 'table');
+            addHiddenField(consignmentForm, '_captcha', 'false');
+            
+            // Shop forms
+            document.querySelectorAll('.shop-form').forEach((form, index) => {
+                form.action = 'https://formsubmit.co/kvn41171@gmail.com';
+                form.method = 'POST';
+                form.onsubmit = null;
+                
+                const productName = form.querySelector('input[name="product"]').value;
+                addHiddenField(form, '_subject', `Shop Purchase - ${productName}`);
+                addHiddenField(form, '_template', 'table');
+                addHiddenField(form, '_captcha', 'false');
+            });
+            
+            alert('🚀 FormSubmit enabled! Forms will now send emails when submitted.');
+        }
+
+        // Helper function to add hidden fields
+        function addHiddenField(form, name, value) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = name;
+            hiddenField.value = value;
+            form.appendChild(hiddenField);
+        }
+
+        // Show all submissions (for testing)
+        function showSubmissions() {
+            if (formSubmissions.length === 0) {
+                alert('No form submissions yet.');
+                return;
+            }
+            
+            let message = '📋 FORM SUBMISSIONS:\n\n';
+            formSubmissions.forEach((sub, index) => {
+                message += `${index + 1}. ${sub.type.toUpperCase()} - ${sub.timestamp}\n`;
+                Object.entries(sub.data).forEach(([key, value]) => {
+                    message += `   ${key}: ${value}\n`;
+                });
+                message += '\n';
+            });
+            
+            console.log('All Submissions:', formSubmissions);
+            alert(message);
+        }
+
+        // Clear all forms
+        function clearAllForms() {
+            document.querySelectorAll('form').forEach(form => form.reset());
+            formSubmissions = [];
+            alert('All forms cleared!');
+        }
+
         // Mobile Menu Toggle
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
@@ -1120,7 +1268,7 @@
         // Auction Bid System
         document.getElementById('placeBid').addEventListener('click', function() {
             const bidAmount = parseInt(document.getElementById('bidAmount').value);
-            const currentBid = 180; // Starting bid
+            const currentBid = 180;
             const minIncrement = 5;
             
             if (isNaN(bidAmount)) {
@@ -1144,11 +1292,9 @@
             filter.addEventListener('click', function() {
                 const filterValue = this.getAttribute('data-filter');
                 
-                // Update active filter
                 document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Filter products
                 document.querySelectorAll('.product-card').forEach(product => {
                     if (filterValue === 'all' || product.getAttribute('data-category') === filterValue) {
                         product.style.display = 'block';
@@ -1156,31 +1302,6 @@
                         product.style.display = 'none';
                     }
                 });
-            });
-        });
-        
-        // Form Submissions with FormSubmit
-        document.getElementById('consignmentForm').addEventListener('submit', function(e) {
-            // FormSubmit will handle the submission
-            setTimeout(() => {
-                this.reset();
-            }, 1000);
-        });
-        
-        document.getElementById('commissionForm').addEventListener('submit', function(e) {
-            // FormSubmit will handle the submission
-            setTimeout(() => {
-                this.reset();
-            }, 1000);
-        });
-        
-        // Shop form submissions
-        document.querySelectorAll('.shop-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                // FormSubmit will handle the submission
-                setTimeout(() => {
-                    alert('Thank you for your purchase! We will contact you within 24 hours to arrange payment and delivery.');
-                }, 1000);
             });
         });
         
@@ -1199,7 +1320,6 @@
                         behavior: 'smooth'
                     });
                     
-                    // Close mobile menu if open
                     document.querySelector('.nav-links').classList.remove('active');
                 }
             });
@@ -1207,6 +1327,15 @@
         
         // Initialize the page
         startCountdown();
+
+        // Instructions for when ready to host
+        console.log(`🚀 READY TO HOST INSTRUCTIONS:
+        1. Click "Enable FormSubmit" button in bottom-right
+        2. Upload this file to Netlify Drop: https://app.netlify.com/drop
+        3. Your forms will automatically send emails to kvn41171@gmail.com
+        4. Test by submitting a form - check your email!`);
     </script>
 </body>
+</html>
+
 </html>
